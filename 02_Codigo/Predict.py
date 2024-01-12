@@ -1,6 +1,7 @@
 import os
 import pandas as pd
 import joblib
+import numpy as np
 
 class RF_predict():
     def __init__(self,target1,target2,root,root_model_spi,root_model_bwi):
@@ -40,10 +41,12 @@ class RF_predict():
             df_filtered = df[mask]
             x_model1 = df_filtered[['Cu%', 'Mo%', 'AgPPM', 'AuPPM', 'Al%', 'Ca%', 'Fe%', 'Mg%', 'Na%', 'S%']]
             result_model1 = Model_1(x_model1)*0.9
+            result_model1 = np.clip(result_model1, 10, 22.5)
             df.loc[mask, self.target1] = result_model1
             df_not_filtered = df[~mask]
             x_model2 = df_not_filtered[['Cu%', 'Mo%', 'AgPPM', 'AuPPM', 'Al%', 'Ca%', 'Fe%', 'Mg%', 'Na%', 'S%']]
             result_model2 = Model_2(x_model2)*0.92
+            result_model2 = np.clip(result_model2, 9, 20)
             df.loc[~mask, self.target1] = result_model2
             #BWI
             #Model_1 factor 0.90
@@ -83,10 +86,12 @@ class RF_predict():
             df_filtered = df[mask]
             x_model1 = df_filtered[['Cu%', 'Mo%', 'AgPPM', 'AuPPM', 'Al%', 'Ca%', 'Fe%', 'Mg%', 'Na%', 'S%','BWI']]
             result_model1 = Model_1(x_model1)*1.2
+            result_model1 = np.clip(result_model1, 60, 160)
             df.loc[mask, self.target2] = result_model1
             df_not_filtered = df[~mask]
             x_model2 = df_not_filtered[['Cu%', 'Mo%', 'AgPPM', 'AuPPM', 'Al%', 'Ca%', 'Fe%', 'Mg%', 'Na%', 'S%','BWI']]
             result_model2 = Model_2(x_model2)*0.88
+            result_model1 = np.clip(result_model1, 25, 130)
             df.loc[~mask, self.target2] = result_model2
             #SPI
             #Model_1 factor 
