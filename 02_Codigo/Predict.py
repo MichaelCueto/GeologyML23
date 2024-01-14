@@ -40,17 +40,15 @@ class RF_predict():
             mask = df[element] >= ley
             df_filtered = df[mask]
             x_model1 = df_filtered[['Cu%', 'Mo%', 'AgPPM', 'AuPPM', 'Al%', 'Ca%', 'Fe%', 'Mg%', 'Na%', 'S%']]
-            result_model1 = Model_1(x_model1)*0.9
+            m1,m2 = 0.9,0.92
+            result_model1 = Model_1(x_model1)*m1
             result_model1 = np.clip(result_model1, 10, 22.5)
             df.loc[mask, self.target1] = result_model1
             df_not_filtered = df[~mask]
             x_model2 = df_not_filtered[['Cu%', 'Mo%', 'AgPPM', 'AuPPM', 'Al%', 'Ca%', 'Fe%', 'Mg%', 'Na%', 'S%']]
-            result_model2 = Model_2(x_model2)*0.92
+            result_model2 = Model_2(x_model2)*m2
             result_model2 = np.clip(result_model2, 9, 20)
             df.loc[~mask, self.target1] = result_model2
-            #BWI
-            #Model_1 factor 0.90
-            #Model_2 facotr 0.92
             return df
         
         db = Use_Model_RF(element='Na%',ley=1.0)
@@ -81,21 +79,21 @@ class RF_predict():
         
         def Use_Model_RF(element,ley):
             #For SPI
+            coordenadas = pd.read_excel(self.root)[['X','Y','Z']]
             df = self.BWI_Predict()[['Cu%', 'Mo%', 'AgPPM', 'AuPPM', 'Al%', 'Ca%', 'Fe%', 'Mg%', 'Na%', 'S%','BWI']]
             mask = df[element] >= ley
+            m1,m2 = 1.2,0.88
             df_filtered = df[mask]
             x_model1 = df_filtered[['Cu%', 'Mo%', 'AgPPM', 'AuPPM', 'Al%', 'Ca%', 'Fe%', 'Mg%', 'Na%', 'S%','BWI']]
-            result_model1 = Model_1(x_model1)*1.2
+            result_model1 = Model_1(x_model1)*m1
             result_model1 = np.clip(result_model1, 60, 160)
             df.loc[mask, self.target2] = result_model1
             df_not_filtered = df[~mask]
             x_model2 = df_not_filtered[['Cu%', 'Mo%', 'AgPPM', 'AuPPM', 'Al%', 'Ca%', 'Fe%', 'Mg%', 'Na%', 'S%','BWI']]
-            result_model2 = Model_2(x_model2)*0.88
+            result_model2 = Model_2(x_model2)*m2
             result_model1 = np.clip(result_model1, 25, 130)
             df.loc[~mask, self.target2] = result_model2
-            #SPI
-            #Model_1 factor 
-            #Model_2 facotr 
+            df = pd.concat([coordenadas,df],axis=1)
             return df
         df = Use_Model_RF(element='Na%',ley=1.0)
         return df  
