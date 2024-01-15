@@ -92,8 +92,7 @@ class GeologyML():
             y1 = df1[self.target]
             X2 = df2[['Cu%', 'Mo%','AgPPM', 'AuPPM', 'Al%', 'Ca%', 'Fe%', 'Mg%', 'Na%', 'S%']]
             y2 = df2[self.target]
-            # X1_train, X1_test, y1_train, y1_test = train_test_split(X1, y1, test_size=0.2, random_state=42)
-            # X2_train, X2_test, y2_train, y2_test = train_test_split(X2, y2, test_size=0.2, random_state=42)
+
         if self.target == 'SPI':
             df = pd.read_excel(root)
             df = df.sample(frac=1)
