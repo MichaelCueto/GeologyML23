@@ -9,7 +9,7 @@ class user_class():
     def Generate_Model(self,root):
         root_model_bwi = '../04_Model/Hardness/BWI/'
         root_model_spi = '../04_Model/Hardness/SPI/'
-        GeologyML(target='BWI',element='Na%',ley=1).RF_Model(root,root_model_bwi)
+        #GeologyML(target='BWI',element='Na%',ley=1).RF_Model(root,root_model_bwi)
         GeologyML(target='SPI',element='Na%',ley=1).RF_Model(root,root_model_spi)
        
 
