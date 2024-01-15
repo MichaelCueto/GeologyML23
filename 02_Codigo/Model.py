@@ -72,15 +72,15 @@ class GeologyML():
         file_model = os.path.join(root_model, file_model)
         joblib.dump(rfr,file_model)
 
-        print("Scoring Analysis and Graphics")
-        scoring = {'abs_error': 'neg_mean_absolute_error', 'squared_error': 'neg_mean_squared_error', 'r2': 'r2','explained_variance': 'explained_variance'}
-        scores = cross_validate(rfr, X, y, cv=10, scoring=scoring, return_train_score=True)
-        print("Random Forest Regression Analysis")
-        print("MAE :", abs(scores['train_abs_error'].mean()), "| RMSE :",
-                math.sqrt(abs(scores['train_squared_error'].mean())),
-                "| R2 :", scores['train_r2'].mean(), "| EV :", scores['train_explained_variance'].mean())
+        # print("Scoring Analysis and Graphics")
+        # scoring = {'abs_error': 'neg_mean_absolute_error', 'squared_error': 'neg_mean_squared_error', 'r2': 'r2','explained_variance': 'explained_variance'}
+        # scores = cross_validate(rfr, X, y, cv=10, scoring=scoring, return_train_score=True)
+        # print("Random Forest Regression Analysis")
+        # print("MAE :", abs(scores['train_abs_error'].mean()), "| RMSE :",
+        #         math.sqrt(abs(scores['train_squared_error'].mean())),
+        #         "| R2 :", scores['train_r2'].mean(), "| EV :", scores['train_explained_variance'].mean())
         yp = rfr.predict(X)
-        self.Grafics_ML(y, yp)
+        #self.Grafics_ML(y, yp)
 
 
     def RF_Model(self,root,root_model):
@@ -92,8 +92,8 @@ class GeologyML():
             y1 = df1[self.target]
             X2 = df2[['Cu%', 'Mo%','AgPPM', 'AuPPM', 'Al%', 'Ca%', 'Fe%', 'Mg%', 'Na%', 'S%']]
             y2 = df2[self.target]
-                # X1_train, X1_test, y1_train, y1_test = train_test_split(X1, y1, test_size=0.2, random_state=42)
-                # X2_train, X2_test, y2_train, y2_test = train_test_split(X2, y2, test_size=0.2, random_state=42)
+            # X1_train, X1_test, y1_train, y1_test = train_test_split(X1, y1, test_size=0.2, random_state=42)
+            # X2_train, X2_test, y2_train, y2_test = train_test_split(X2, y2, test_size=0.2, random_state=42)
         if self.target == 'SPI':
             df = pd.read_excel(root)
             df = df.sample(frac=1)
