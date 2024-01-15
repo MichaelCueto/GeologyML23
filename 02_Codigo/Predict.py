@@ -95,5 +95,6 @@ class RF_predict():
             df.loc[~mask, self.target2] = result_model2
             df = pd.concat([coordenadas,df],axis=1)
             return df
-        df = Use_Model_RF(element='Na%',ley=1.0)
+        df = Use_Model_RF(element='Na%',ley=0.75)
         return df  
+        
