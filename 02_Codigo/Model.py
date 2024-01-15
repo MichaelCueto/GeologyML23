@@ -47,10 +47,10 @@ class GeologyML():
         print('Best Parameters of Random Forest Ramdomorized')
         rg = {'bootstrap': [True, False], 
                 'max_depth': [500,750,1000,None],
-                'max_features': ['auto','sqrt','log2',0.2,0.3,0.6,0.9], 
-                'min_samples_leaf': [1,2,4,16,32,64,128],
-                'min_samples_split': [2,5,10,20,40,80], 
-                'n_estimators': [1000, 1200, 1400, 1600, 1800, 2000]}
+                'max_features': ['auto','sqrt','log2',0.2], 
+                'min_samples_leaf': [1,2,4,8],
+                'min_samples_split': [2,5,10], 
+                'n_estimators': [5, 7, 10, 15]}
         if search_all:
                 gsc = GridSearchCV(estimator=RandomForestRegressor(), param_grid=rg,
                                 cv=5, verbose=0, n_jobs=-1)
