@@ -44,7 +44,7 @@ class GeologyML():
         return df1,df2
 
     def RF_Best_Params(self,X,y,search_all):
-        print('Best Parameters of Random Forest Ramdomorized')
+        #print('Best Parameters of Random Forest Ramdomorized')
         rg = {'bootstrap': [True, False], 
                 'max_depth': [500,750,1000,None],
                 'max_features': ['auto','sqrt','log2',0.2,0.3,0.6,0.9], 
@@ -66,7 +66,7 @@ class GeologyML():
                                 min_samples_leaf=params["min_samples_leaf"],max_features= params["max_features"],
                                         min_samples_split=params["min_samples_split"],bootstrap=params["bootstrap"],
                                         verbose=0, warm_start=True,random_state=42,n_jobs=-1)
-        print("Best Params: ",params)
+        #print("Best Params: ",params)
         rfr.fit(X, y)
         file_model= name +'.pkl'
         file_model = os.path.join(root_model, file_model)
