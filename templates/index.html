@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GeologyML</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div id="upload-screen">
+    <h1>Subir Archivos</h1>
+    <form id="files-upload">
+      <label for="csv-file">Selecciona un archivo CSV:</label>
+      <input type="file" id="csv-file" accept=".csv"><br><br>
+
+      <label for="model-folder">Selecciona modelos (.pkl):</label>
+      <input type="file" id="model-folder" multiple accept=".pkl"><br><br>
+
+      <button type="submit">Subir Archivos</button>
+    </form>
+  </div>
+
+  <div id="results-screen" class="hidden">
+    <h1>Resultados</h1>
+    <div id="results-plots"></div>
+    <button id="back-button">Volver</button>
+  </div>
+
+  <script src="/static/script.js"></script>
+</body>
+</html>

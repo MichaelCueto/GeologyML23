@@ -1,0 +1,129 @@
+/* General Styles */
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f7f9fc; /* Fondo claro */
+  color: #2c3e50; /* Texto oscuro */
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  color: #34495e; /* Azul oscuro */
+  text-align: center;
+}
+
+label {
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+a {
+  color: #3498db;
+  text-decoration: none;
+}
+
+/* Layout */
+#upload-screen, #results-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  padding: 20px;
+}
+
+.hidden {
+  display: none;
+}
+
+form {
+  width: 100%;
+  max-width: 400px;
+  background-color: #ffffff; /* Fondo del formulario */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Sombra */
+}
+
+button {
+  width: 100%;
+  padding: 10px 20px;
+  margin-top: 20px;
+  background-color: #3498db; /* Botón azul */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #2980b9; /* Azul más oscuro */
+}
+
+input[type="file"] {
+  border: 1px solid #dfe6e9;
+  padding: 8px;
+  width: 100%;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  font-size: 14px;
+  color: #34495e;
+}
+
+button:disabled {
+  background-color: #bdc3c7; /* Gris */
+  cursor: not-allowed;
+}
+
+.notification {
+  background-color: #1abc9c; /* Verde éxito */
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 14px;
+  margin-top: 10px;
+  animation: fadeOut 3s forwards;
+}
+
+.notification.error {
+  background-color: #e74c3c; /* Rojo error */
+}
+
+/* Fade-out animation for notifications */
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
+
+/* Results Screen */
+#results-plots {
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+}
+
+#results-plots p {
+  font-size: 16px;
+  color: #2c3e50;
+  margin-bottom: 10px;
+}
+
+#back-button {
+  background-color: #e74c3c; /* Botón rojo */
+  color: white;
+  font-size: 14px;
+}
+
+#back-button:hover {
+  background-color: #c0392b;
+}
