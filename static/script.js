@@ -1,24 +1,48 @@
 document.addEventListener("DOMContentLoaded", () => {
   const fileUploadForm = document.getElementById("files-upload");
   const resultsPlots = document.getElementById("results-plots");
-  const notifications = document.getElementById("notifications");
+  const uploadScreen = document.getElementById("upload-screen");
+  const resultsScreen = document.getElementById("results-screen");
+  const downloadButton = document.getElementById("download-button");
+  const backButton = document.getElementById("back-button");
+
+  // Asegurarse de que el contenedor de notificaciones esté en el DOM
+  function ensureNotificationContainer() {
+    let notifications = document.getElementById("notifications");
+    if (!notifications) {
+      notifications = document.createElement("div");
+      notifications.id = "notifications";
+      notifications.style.position = "fixed";
+      notifications.style.top = "10px";
+      notifications.style.right = "10px";
+      notifications.style.zIndex = "1000";
+      notifications.style.width = "300px";
+      document.body.appendChild(notifications);
+    }
+    return notifications;
+  }
 
   // Función para mostrar notificaciones temporales
   function showNotification(message) {
-    const notifications = document.getElementById("notifications");
-    if (!notifications) {
-      console.error("Contenedor de notificaciones no encontrado.");
-      return;
-    }
+    const notifications = ensureNotificationContainer();
 
     const notification = document.createElement("div");
     notification.className = "notification";
     notification.textContent = message;
+    notification.style.backgroundColor = "#333";
+    notification.style.color = "#fff";
+    notification.style.padding = "10px";
+    notification.style.marginBottom = "10px";
+    notification.style.borderRadius = "5px";
+    notification.style.boxShadow = "0px 4px 6px rgba(0, 0, 0, 0.2)";
+    notification.style.animation = "fadeOut 3s forwards";
 
     notifications.appendChild(notification);
 
     setTimeout(() => {
-      notifications.removeChild(notification);
+      if (notifications.contains(notification)) {
+        notifications.removeChild(notification);
+      }
     }, 3000);
   }
 
@@ -92,12 +116,27 @@ document.addEventListener("DOMContentLoaded", () => {
         return response.json();
       })
       .then((data) => {
-        console.log("Resultados del procesamiento:", data);
-        showNotification("Procesamiento completado con éxito.");
+        // Mostrar resultados
+        const graph = JSON.parse(data.graph);
+        Plotly.newPlot(resultsPlots, graph.data, graph.layout);
+
+        // Configurar descarga
+        downloadButton.onclick = () => {
+          window.location.href = `/download/${data.predictions_path.split("/").pop()}`;
+        };
+
+        // Cambiar pantalla
+        uploadScreen.classList.add("hidden");
+        resultsScreen.classList.remove("hidden");
       })
       .catch((error) => {
         console.error("Error en el flujo de archivos:", error);
         alert(`Error: ${error.message}`);
       });
+  });
+
+  backButton.addEventListener("click", () => {
+    resultsScreen.classList.add("hidden");
+    uploadScreen.classList.remove("hidden");
   });
 });

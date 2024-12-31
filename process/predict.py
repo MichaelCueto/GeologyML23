@@ -51,7 +51,7 @@ class use_predict():
             # Leer archivo CSV
             print(f"Intentando leer el archivo: {self.root_data}")
             df = pd.read_csv(self.root_data)
-
+            
             # Verificar columnas requeridas
             print(f"Columnas del archivo: {df.columns.tolist()}")
             missing_features = [col for col in features if col not in df.columns]
@@ -59,14 +59,16 @@ class use_predict():
                 raise ValueError(f"Faltan las siguientes columnas requeridas: {missing_features}")
 
             # Seleccionar características
-            df = df[features]
-
+            coordenedas = df[['X','Y','Z']]
+            db = df[features]
+    
             # Realizar predicciones
-            spi_pred, bwi_pred = self.model_predict(df)
-
+            spi_pred, bwi_pred = self.model_predict(db)
             # Agregar predicciones al DataFrame
-            df['SPIP'] = spi_pred
-            df['BWIP'] = bwi_pred
+            db['SPI'] = spi_pred
+            db['BWI'] = bwi_pred
+            db_final = pd.concat([coordenedas, db], axis=1)
+            return db_final
             print("Predicciones realizadas exitosamente.")
 
         except FileNotFoundError as e:

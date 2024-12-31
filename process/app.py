@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, send_from_directory
 from werkzeug.utils import secure_filename
 from flask_cors import CORS 
 import os
@@ -12,6 +12,8 @@ CORS(app)
 # Asegúrate de que exista la carpeta de subidas
 UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), "uploads")
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER 
+
 # Ruta para servir la página principal
 @app.route("/")
 def index():
@@ -50,6 +52,7 @@ def process_files():
         data = request.json
         csv_path = data.get("csv_path")
         model_paths = data.get("model_paths")
+        feature_to_plot = data.get("feature", "SPI") # SPI es el valor por defecto
 
         if not csv_path or not model_paths:
             return jsonify({"error": "Faltan rutas para procesar"}), 400
@@ -66,18 +69,45 @@ def process_files():
         print(f"Procesando modelos: {model_paths}")
         # Procesar los archivos con la lógica de predicción
 
+        # Realizar las predicciones
         predictor = use_predict(root_data=csv_path, root_model=os.path.dirname(model_paths[0]))
         resultados = predictor.Use_Model_RF()
-        fig = px.scatter_3d(df, x='X', y='Y', z='Z', color=feature,
+
+
+        # Guardar los resultados como un CSV
+        predictions_path = os.path.join(UPLOAD_FOLDER, 'predicciones.csv')
+        resultados.to_csv(predictions_path, index=False)
+        print(f"Resultados guardados en: {predictions_path}")
+
+        # Crear gráfico 3D con Plotly
+        if feature_to_plot == 'SPI':
+            feature = 'SPI'
+        elif feature_to_plot == 'BWI':
+            feature = 'BWI'
+        else: 
+            return jsonify({"error": f"Feature inválido: {feature_to_plot}"}), 400
+
+        fig = px.scatter_3d(resultados, x='X', y='Y', z='Z', color=feature,
                             title=f'Grafico 3D para {feature}',
                             labels={feature: feature},
                             color_continuous_scale='Viridis')
+        graph_json = fig.to_json()
 
-        graph_json =json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
-        return jsonify({"message": "Procesamiento completado", "results": resultados})
+        return jsonify({
+            "message" : "Procesamiento exitoso",
+            "graph": graph_json,
+            "predictions_path": predictions_path})
 
     except Exception as e:
         return jsonify({"error": f"Error al procesar los archivos: {str(e)}"}), 500
+
+# Ruta para descargar resultados
+@app.route('/download/<filename>', methods=['GET'])
+def download_file(filename):
+    try:
+        return send_from_directory(UPLOAD_FOLDER, filename, as_attachment=True)
+    except FileNotFoundError:
+        return jsonify({"error": "Archivo no encontrado"}), 404
 
 if __name__ == "__main__":
     app.run(debug=True, port=5001)

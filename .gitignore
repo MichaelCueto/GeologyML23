@@ -2,3 +2,9 @@
 venv/
 __pycache__/
 *.pyc
+
+# Archivos temporales y del sistema
+.DS_Store
+
+# Ignorar dependencias innecesarias
+requirements.txt~

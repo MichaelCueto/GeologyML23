@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GeologyML</title>
   <link rel="stylesheet" href="/static/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/plotly.js-dist/plotly.min.js"></script>
 </head>
 <body>
   <div id="upload-screen">
@@ -16,14 +17,15 @@
       <label for="model-folder">Selecciona modelos (.pkl):</label>
       <input type="file" id="model-folder" multiple accept=".pkl"><br><br>
 
-      <button type="submit">Subir Archivos</button>
+      <button type="submit">Subir y Procesar</button>
     </form>
   </div>
 
   <div id="results-screen" class="hidden">
     <h1>Resultados</h1>
-    <div id="results-plots"></div>
+    <div id="results-plots" style="width: 100%; height: 500px;"></div>
     <button id="back-button">Volver</button>
+    <button id="download-button">Descargar Resultados</button>
   </div>
 
   <script src="/static/script.js"></script>
