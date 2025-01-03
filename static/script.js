@@ -1,10 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
   const fileUploadForm = document.getElementById("files-upload");
-  const resultsPlots = document.getElementById("results-plots");
-  const uploadScreen = document.getElementById("upload-screen");
-  const resultsScreen = document.getElementById("results-screen");
-  const downloadButton = document.getElementById("download-button");
-  const backButton = document.getElementById("back-button");
 
   // Asegurarse de que el contenedor de notificaciones esté en el DOM
   function ensureNotificationContainer() {
@@ -23,13 +18,13 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Función para mostrar notificaciones temporales
-  function showNotification(message) {
+  function showNotification(message, type = "success") {
     const notifications = ensureNotificationContainer();
 
     const notification = document.createElement("div");
-    notification.className = "notification";
+    notification.className = `notification ${type}`;
     notification.textContent = message;
-    notification.style.backgroundColor = "#333";
+    notification.style.backgroundColor = type === "error" ? "#e74c3c" : "#2ecc71";
     notification.style.color = "#fff";
     notification.style.padding = "10px";
     notification.style.marginBottom = "10px";
@@ -46,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 3000);
   }
 
-  // Subir archivos y procesarlos al hacer clic en el botón
+  // Subir archivos y procesarlos
   fileUploadForm.addEventListener("submit", (event) => {
     event.preventDefault();
 
@@ -55,12 +50,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const modelFiles = document.getElementById("model-folder").files;
 
     if (!csvFile) {
-      alert("Por favor, selecciona un archivo CSV.");
+      showNotification("Por favor, selecciona un archivo CSV.", "error");
       return;
     }
 
     if (modelFiles.length === 0) {
-      alert("Por favor, selecciona al menos un modelo (.pkl).");
+      showNotification("Por favor, selecciona al menos un modelo (.pkl).", "error");
       return;
     }
 
@@ -71,7 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     for (const file of modelFiles) {
       if (file.name.endsWith(".pkl")) {
-        formData.append("models", file);
+        formData.append("model", file); // Clave "model" para los archivos .pkl
         console.log("Modelo añadido:", file.name);
       } else {
         console.warn(`Archivo ignorado (no es .pkl): ${file.name}`);
@@ -95,48 +90,16 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log("Archivos subidos con éxito:", data);
         showNotification("Archivos subidos correctamente.");
 
-        // Llama automáticamente al endpoint de procesamiento
-        return fetch("http://localhost:5001/process", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            csv_path: data.csv_path,
-            model_paths: data.model_paths,
-          }),
-        });
-      })
-      .then((response) => {
-        if (!response.ok) {
-          return response.json().then((errorData) => {
-            throw new Error(errorData.error || "Error desconocido al procesar los archivos.");
-          });
-        }
-        return response.json();
-      })
-      .then((data) => {
-        // Mostrar resultados
-        const graph = JSON.parse(data.graph);
-        Plotly.newPlot(resultsPlots, graph.data, graph.layout);
+        // Guardar las rutas relevantes en el sessionStorage para usar en la página de gráficos
+        sessionStorage.setItem("csvPath", data.csv_path);
+        sessionStorage.setItem("modelPaths", JSON.stringify(data.model_paths));
 
-        // Configurar descarga
-        downloadButton.onclick = () => {
-          window.location.href = `/download/${data.predictions_path.split("/").pop()}`;
-        };
-
-        // Cambiar pantalla
-        uploadScreen.classList.add("hidden");
-        resultsScreen.classList.remove("hidden");
+        // Redirigir a plot3d.html
+        window.location.href = "/plot3d";
       })
       .catch((error) => {
-        console.error("Error en el flujo de archivos:", error);
-        alert(`Error: ${error.message}`);
+        console.error("Error al subir archivos:", error);
+        showNotification(`Error: ${error.message}`, "error");
       });
-  });
-
-  backButton.addEventListener("click", () => {
-    resultsScreen.classList.add("hidden");
-    uploadScreen.classList.remove("hidden");
   });
 });

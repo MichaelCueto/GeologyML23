@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resultados</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <script src="/static/plotly.min.js"></script>
+  <script src="/static/script_plot3d.js"></script>
+</head>
+<body>
+  <div id="switch-container">
+    <label for="toggle-feature">Feature:</label>
+    <label class="switch">
+      <input type="checkbox" id="toggle-feature">
+      <span class="slider"></span>
+    </label>
+    <span id="feature-label">SPI</span>
+  </div>
+  <div id="results-container">
+    <div id="results-plots"></div>
+    <div id="actions-container">
+      <button id="back-button">Volver</button>
+      <button id="download-button">Descargar Resultados</button>
+    </div>
+  </div>
+</body>
+</html>

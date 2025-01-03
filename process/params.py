@@ -1,6 +1,5 @@
 features = ['Cu%','Mo%','AgPPM','AuPPM','Al%','Ca%','Fe%','Mg%','Na%','S%']
 target = ['SPI']
-# target_bwi = ['BWI']
 
 rg = {'bootstrap': [True, False], 
           'max_depth': [5,10,15,None],
