@@ -1,4 +1,4 @@
-# GeologyMlL App
+# GeologyML App
 Una aplicación web diseñada para cargar, procesar y visualizar datos geológicos en un entorno interactivo. Utilizando modelos de Machine Learning, la aplicación predice índices como SPI y BWI, mostrando gráficos en 3D para una mejor interpretación.
 
 ## Funcionalidades  
