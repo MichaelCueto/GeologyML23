@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let currentFeature = "SPI";
 
   function fetchAndRenderGraph(feature) {
-    fetch("http://localhost:5001/process", {
+    fetch("http://localhost:8081/process", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ feature }),

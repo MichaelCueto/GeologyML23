@@ -74,7 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Enviar archivos al backend para subirlos
-    fetch("http://localhost:5001/uploads", {
+    fetch("http://localhost:8081/uploads", {
       method: "POST",
       body: formData,
     })
